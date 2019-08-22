@@ -98,9 +98,7 @@ class CPU:
                 running = False
             elif IR == LDI:
                 self.reg[operand_a] = operand_b
-                self.pc += 1
+                self.pc += 3
             elif IR == PRN:
                 print(self.reg[operand_a])
-                self.pc += 3
-
-            pass
+                self.pc += 2
