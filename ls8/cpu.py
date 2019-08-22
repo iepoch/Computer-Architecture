@@ -80,18 +80,27 @@ class CPU:
         Using ram_read(), read the bytes at PC+1 and PC+2 
         from RAM into variables operand_a and operand_b in case 
         the instruction needs them."""
-        
+
         HLT = 0b00000001
         PRN = 0b01000111
         LDI = 0b10000010
-        
+
         running = True
 
         while running:
-            # Storeing the result in IR from reading 
+            # Storeing the result in IR from reading
             # the memory address that is stored in register PC
             IR = self.ram[self.pc]
             operand_a = self.ram_read(self.pc + 1)
             operand_b = self.ram_read(self.pc + 2)
-            
+
+            if IR == HLT:
+                running = False
+            elif IR == LDI:
+                self.reg[operand_a] = operand_b
+                self.pc += 1
+            elif IR == PRN:
+                print(self.reg[operand_a])
+                self.pc += 3
+
             pass
