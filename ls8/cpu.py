@@ -106,11 +106,12 @@ class CPU:
             # the memory address that is stored in register PC
             IR = self.ram[self.pc]
             operand_a = self.ram_read(self.pc + 1)
+            # print(operand_a)
             operand_b = self.ram_read(self.pc + 2)
-
-            # if IR == HLT:
-            #     running = False
-            if IR == self.op_LDI:
+            print(operand_b)
+            if IR == HLT:
+                self.op_halt = True
+            elif IR == LDI:
                 self.reg[operand_a] = operand_b
                 self.pc += 3
             elif IR == PRN:
