@@ -1,6 +1,9 @@
 """CPU functionality."""
 
 import sys
+HLT = 0b00000001
+PRN = 0b01000111
+LDI = 0b10000010
 
 
 class CPU:
@@ -14,12 +17,27 @@ class CPU:
         self.pc = 0
         # where we can store values in the reg
         self.reg = [0] * 8
+        self.op_halt = False
+        self.op_LDI = 0b10000010
+        self.inst = {
+            HLT: self.op_halt,
+            LDI: self.op_LDI,
+
+        }
 
     def ram_read(self, address):
         return self.ram[address]
 
     def ram_write(self, value, address):
         self.ram[address] = value
+
+    def op_halt(self):
+        if HLT is True:
+            return True
+
+    def opt_LDI(self):
+        if LDI == self.op_LDI:
+            return True
 
     def load(self):
         """Load a program into memory."""
@@ -81,22 +99,18 @@ class CPU:
         from RAM into variables operand_a and operand_b in case 
         the instruction needs them."""
 
-        HLT = 0b00000001
-        PRN = 0b01000111
-        LDI = 0b10000010
+        # running = True
 
-        running = True
-
-        while running:
+        while not self.op_halt:
             # Storeing the result in IR from reading
             # the memory address that is stored in register PC
             IR = self.ram[self.pc]
             operand_a = self.ram_read(self.pc + 1)
             operand_b = self.ram_read(self.pc + 2)
 
-            if IR == HLT:
-                running = False
-            elif IR == LDI:
+            # if IR == HLT:
+            #     running = False
+            if IR == self.op_LDI:
                 self.reg[operand_a] = operand_b
                 self.pc += 3
             elif IR == PRN:
