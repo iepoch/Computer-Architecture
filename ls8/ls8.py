@@ -5,7 +5,10 @@
 import sys
 from cpu import *
 
-cpu = CPU()
-
-cpu.load()
-cpu.run()
+if len(sys.argv) == 2:
+    cpu = CPU()
+    cpu.load(sys.argv[1])  # pass filename to load
+    cpu.run()
+else:
+    print("Error: Please provide a filename to exevute instructions")
+    sys.exit(1)
