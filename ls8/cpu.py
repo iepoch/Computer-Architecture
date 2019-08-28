@@ -22,11 +22,14 @@ class CPU:
         self.reg = [0] * 8
         self.op_hlt = False
 
+        self.reg[7] = 0xF4  # stack pointer
+        self.SP = 7
+
         self.inst = {
             HLT: self.op_halt,
             LDI: self.op_LDI,
             MUL: self.op_mul,
-            PRN: self.op_PRN
+            PRN: self.op_PRN,
         }
 
     def ram_read(self, address):
@@ -74,6 +77,7 @@ class CPU:
         # elif op == "SUB": etc
         elif op == "MUL":
             self.reg[reg_a] *= self.reg[reg_b]
+
         else:
             raise Exception("Unsupported ALU operation")
 
@@ -132,6 +136,15 @@ class CPU:
             #     self.pc += 2
             if IR in self.inst:
                 self.inst[IR](operand_a, operand_b)
+            if IR == "PUSH":
+                self.reg[self.SP] -= 1
+                self.ram[self.reg[self.SP]] = self.reg[operand_a]
+                self.pc += 2
+                
+                
+            elif IR == "POP":
+                self.reg[operand_a] = self.ram[self.reg[self.SP]]
+                self.pc += 2
 
             if not ins_set:
                 self.pc += op_size + 1
