@@ -67,7 +67,7 @@ class CPU:
                 first_bit = instruction[0]
 
                 if first_bit == "0" or first_bit == "1":
-                    print(instruction)
+
                     self.ram[address] = int(instruction[:8], 2)
                     address += 1
 
@@ -137,22 +137,17 @@ class CPU:
             #     print(self.reg[operand_a])
             #     self.pc += 2
             if IR in self.inst:
-                print(bin(IR))
+
                 self.inst[IR](operand_a, operand_b)
-            # elif IR == PUSH:
+            elif IR == PUSH:
 
-            #     self.reg[self.SP] -= 1
-            #     self.ram[self.reg[self.SP]] = self.reg[operand_a]
+                self.reg[self.SP] -= 1
+                self.ram[self.reg[self.SP]] = self.reg[operand_a]
 
-            #     self.pc += 2
-            #     print("PUSH")
-
-            # elif IR == POP:
-            #     self.reg[operand_a] = self.ram[self.reg[self.SP]]
-            #     self.ram[self.reg[self.SP]] = 0
-            #     self.reg[self.SP] += 1
-            #     self.pc += 2
-            #     print("POP")
+            elif IR == POP:
+                self.reg[operand_a] = self.ram[self.reg[self.SP]]
+                self.ram[self.reg[self.SP]] = 0
+                self.reg[self.SP] += 1
 
             if not ins_set:
                 self.pc += op_size + 1
