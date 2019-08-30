@@ -7,6 +7,9 @@ LDI = 0b10000010
 MUL = 0b10100010
 PUSH = 0b01000101
 POP = 0b01000110
+CALL = 0b01010000
+RET = 0b00010001
+JMP = 0b01010100
 
 
 class CPU:
@@ -148,6 +151,18 @@ class CPU:
                 self.reg[operand_a] = self.ram[self.reg[self.SP]]
                 self.ram[self.reg[self.SP]] = 0
                 self.reg[self.SP] += 1
+
+            elif IR == CALL:
+                self.reg[self.SP] -= 1
+                self.ram[self.reg[self.SP]] = self.reg[operand_a]
+
+                self.pc = self.reg[operand_a]
+            elif IR == RET:
+                self.reg[operand_a] = self.ram[self.reg[self.SP]]
+                self.reg[self.SP] += 1
+
+            elif IR == JMP:
+                self.pc = self.reg[operand_a]
 
             if not ins_set:
                 self.pc += op_size + 1
