@@ -10,5 +10,5 @@ if len(sys.argv) == 2:
     cpu.load(sys.argv[1])  # pass filename to load
     cpu.run()
 else:
-    print("Error: Please provide a filename to exevute instructions")
+    print("Error: Please provide a filename to execute instructions")
     sys.exit(1)
